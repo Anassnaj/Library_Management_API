@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from library.views import home
 
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path('library/', include('library.urls')),
     # url for user api:
     path('users/', include('users.urls')),
+    path('', home, name='root'),
 ]

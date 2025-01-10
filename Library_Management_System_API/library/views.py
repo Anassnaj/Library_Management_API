@@ -1,27 +1,29 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import Book, BookCheckout
 from .serializers import BookSerializer, BookCheckoutSerializer
-from rest_framework.permissions import IsAuthenticated 
+from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated 
 from django.utils.timezone import now
 from rest_framework.generics import ListAPIView
+from django.http import HttpResponse
 
+def home(request):
+    return HttpResponse("Welcome to the Library Management System!")
 
 # Book ViewSet to handle book operations:
-class BookViewSet(ModelViewSet):  
+class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
-    serializer_class = BookSerializer        
-    permission_classes = [IsAuthenticated] 
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'title'
 
 
 # BookCheckout View to handle book checkout and return operations:
 class CheckOutBookView(APIView):
-    
+
     permission_classes = [IsAuthenticated]
     def post(self, request):
         """
@@ -66,7 +68,7 @@ class ReturnBookView(APIView):
         Returns:
             A response object with a message or an error if the book is not checked out by the user.
         """
-        
+
         user = request.user
         book_id = request.data.get('book_id')
         book = get_object_or_404(Book, id=book_id)
